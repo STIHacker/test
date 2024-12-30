@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BATARIDES</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-image: url("C:/Users/samzp/OneDrive/Desktop/Image/Backround.png");
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            flex-direction: column;
+            padding-top: 0;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 600px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .logo {
+            max-width: 120px;
+            height: auto;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        p.description {
+            font-size: 1.1em;
+            color: #555;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        input {
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            outline: none;
+            font-size: 1em;
+        }
+
+        button {
+            padding: 15px;
+            font-size: 1.2em;
+            background-color: #FF6347;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 15px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        button:hover {
+            background-color: #FF4500;
+            transform: scale(1.05);
+        }
+
+        .rider-item {
+            background-color: #f9f9f9;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .rider-item a {
+            color: #FF6347;
+            text-decoration: none;
+        }
+
+        .rider-item a:hover {
+            text-decoration: underline;
+        }
+
+        .admin-item {
+            margin-bottom: 15px;
+        }
+
+        input.admin-input {
+            width: 45%;
+            padding: 10px;
+            margin-right: 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        /* Scrollable riders list */
+        #riders {
+            max-height: 300px;
+            overflow-y: scroll;
+            margin-bottom: 20px;
+        }
+
+        /* Admin Panel Styling */
+        #adminPanelPage {
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        /* Footer styling */
+        .footer {
+            position: absolute;
+            bottom: 10px;
+            width: 100%;
+            text-align: center;
+            font-size: 0.8em;
+            color: #fff;
+            font-weight: 300;
+        }
+
+        /* Modal Styling */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 600px;
+            width: 80%;
+            text-align: left;
+        }
+
+        .modal button {
+            background-color: #FF6347;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 15px;
+        }
+
+        .modal button:hover {
+            background-color: #FF4500;
+        }
+
+        /* Positioning for About and Description links */
+        .top-right-links {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 20px;
+            font-size: 1em;
+            color: white;
+            cursor: pointer;
+        }
+
+        .top-right-links span {
+            font-weight: bold;
+            text-decoration: underline;
+        }
+
+        /* Ensure links only appear on pages 2 and 3 */
+        #riderListPage .top-right-links,
+        #adminPanelPage .top-right-links {
+            display: flex;
+        }
+
+        #loginPage .top-right-links {
+            display: none;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Top-right clickable links -->
+    <div class="top-right-links">
+        <span onclick="showModal('about')">About</span>
+        <span onclick="showModal('description')">Description</span>
+    </div>
+
+    <div class="container" id="loginPage">
+        <img src="C:/Users/samzp/OneDrive/Desktop/Image/LOGO.png" alt="School Logo" class="logo">
+        <h1>BATARIDES</h1>
+        <input type="text" id="lrn" placeholder="Enter your LRN">
+        <input type="text" id="name" placeholder="Enter your Name">
+        <button onclick="login()">Login</button>
+    </div>
+
+    <div class="container" id="riderListPage" style="display:none;">
+        <img src="C:/Users/samzp/OneDrive/Desktop/Image/LOGO.png" class="logo">
+        <h1>Rider List</h1>
+        
+        <p class="description">Here are all the available riders, along with their contact information and contact numbers. Feel free to reach out to any of them for your needs. They are ready to assist you.</p>
+
+        <div id="riders"></div>
+
+        <div class="button-group">
+            <button onclick="goToAdminPanel()">Go to Admin Panel</button>
+            <button onclick="goBack()">Back to Login</button>
+        </div>
+    </div>
+
+    <div class="container" id="adminPanelPage" style="display:none;">
+        <img src="C:/Users/samzp/OneDrive/Desktop/Image/LOGO.png" class="logo">
+        <h1>Admin Panel - Edit Riders</h1>
+
+        <div class="admin-item">
+            <h3>Add New Rider</h3>
+            <input type="text" id="newRiderName" class="admin-input" placeholder="Enter Rider's Name">
+            <input type="tel" id="newRiderPhone" class="admin-input" placeholder="Enter Rider's Phone" pattern="[0-9]*" inputmode="numeric" title="Only numbers are allowed">
+            <button onclick="addRider()">Add Rider</button>
+        </div>
+
+        <div class="admin-item">
+            <h3>Edit Existing Rider</h3>
+            <select id="riderSelect" onchange="selectRider()">
+                <option value="">Select a Rider</option>
+            </select>
+            <input type="text" id="editRiderName" class="admin-input" placeholder="Edit Rider's Name">
+            <input type="tel" id="editRiderPhone" class="admin-input" placeholder="Edit Rider's Phone" pattern="[0-9]*" inputmode="numeric" title="Only numbers are allowed">
+            <button onclick="editRider()">Save Changes</button>
+        </div>
+
+        <div class="admin-item">
+            <h3>Delete Rider</h3>
+            <select id="deleteRiderSelect" onchange="selectRiderToDelete()">
+                <option value="">Select a Rider to Delete</option>
+            </select>
+            <button onclick="deleteRider()">Delete Rider</button>
+        </div>
+
+        <button onclick="goBackToRiders()">Back to Rider List</button>
+    </div>
+
+    <!-- Modal for displaying About and Description -->
+    <div class="modal" id="aboutModal">
+        <div class="modal-content">
+            <h2>About</h2>
+            <p>BATA Rides is a research project developed by a group of Grade 12 students with the aim of providing an easier way for students to contact tricycle transportation services for their daily commute to school. The purpose of the project is to create a convenient platform where students can easily reach out to available riders. The website was developed by the group with the help of Sameer Husrin, a Bachelor of Science in Information Technology student at STI College Puerto Princesa, Palawan. The website uses JavaScript for all its functionalities, including the management of rider data and the dynamic interaction between the user interface and local storage. This initiative aims to improve the communication between students and tricycle drivers, making transportation to school more accessible and efficient.</p>
+            <button onclick="closeModal()">Close</button>
+        </div>
+    </div>
+
+    <div class="modal" id="descriptionModal">
+        <div class="modal-content">
+            <h2>Description</h2>
+            <p>BATA Rides is an interactive web application designed to manage and display a list of available riders, allowing users to view rider details and contact information. The website features a login page where users input their LRN and name to gain access. After logging in, users can view the list of available riders and access the admin panel for managing the rider data. In the admin section, administrators can add, edit, or delete riders, and the updates are stored in local storage for persistent access across sessions. The interface is clean, modern, and mobile-responsive, ensuring ease of use on various devices.</p>
+            <button onclick="closeModal()">Close</button>
+        </div>
+    </div>
+
+    <script>
+        // Load the stored rider data from localStorage on page load
+        let ridersData = JSON.parse(localStorage.getItem('riders')) || [];
+
+        // Display riders in the list
+        function displayRiders() {
+            const ridersContainer = document.getElementById('riders');
+            ridersContainer.innerHTML = '';  // Clear previous list
+            ridersData.forEach((rider, index) => {
+                const riderDiv = document.createElement('div');
+                riderDiv.className = 'rider-item';
+                riderDiv.innerHTML = `
+                    <span>${rider.name} - <a href="tel:${rider.phone}">${rider.phone}</a></span>
+                `;
+                ridersContainer.appendChild(riderDiv);
+            });
+            updateRiderSelect();
+        }
+
+        // Update rider select options for editing and deleting
+        function updateRiderSelect() {
+            const riderSelect = document.getElementById('riderSelect');
+            const deleteRiderSelect = document.getElementById('deleteRiderSelect');
+            riderSelect.innerHTML = '<option value="">Select a Rider</option>';
+            deleteRiderSelect.innerHTML = '<option value="">Select a Rider to Delete</option>';
+            ridersData.forEach((rider, index) => {
+                riderSelect.innerHTML += `<option value="${index}">${rider.name}</option>`;
+                deleteRiderSelect.innerHTML += `<option value="${index}">${rider.name}</option>`;
+            });
+        }
+
+        // Login functionality
+        function login() {
+            const lrn = document.getElementById('lrn').value;
+            const name = document.getElementById('name').value;
+            if (lrn && name) {
+                document.getElementById('loginPage').style.display = 'none';
+                document.getElementById('riderListPage').style.display = 'block';
+                displayRiders();
+            } else {
+                alert('Please fill out both fields.');
+            }
+        }
+
+        // Go to Admin Panel
+        function goToAdminPanel() {
+            document.getElementById('riderListPage').style.display = 'none';
+            document.getElementById('adminPanelPage').style.display = 'block';
+        }
+
+        // Go back to Login
+        function goBack() {
+            document.getElementById('loginPage').style.display = 'block';
+            document.getElementById('riderListPage').style.display = 'none';
+        }
+
+        // Go back to Rider List
+        function goBackToRiders() {
+            document.getElementById('adminPanelPage').style.display = 'none';
+            document.getElementById('riderListPage').style.display = 'block';
+        }
+
+        // Add Rider
+        function addRider() {
+            const name = document.getElementById('newRiderName').value;
+            const phone = document.getElementById('newRiderPhone').value;
+            if (name && phone) {
+                ridersData.push({ name, phone });
+                localStorage.setItem('riders', JSON.stringify(ridersData));
+                displayRiders();
+                document.getElementById('newRiderName').value = '';
+                document.getElementById('newRiderPhone').value = '';
+            } else {
+                alert('Please fill out both fields.');
+            }
+        }
+
+        // Select Rider for editing
+        function selectRider() {
+            const riderIndex = document.getElementById('riderSelect').value;
+            if (riderIndex !== '') {
+                document.getElementById('editRiderName').value = ridersData[riderIndex].name;
+                document.getElementById('editRiderPhone').value = ridersData[riderIndex].phone;
+            }
+        }
+
+        // Edit Rider
+        function editRider() {
+            const riderIndex = document.getElementById('riderSelect').value;
+            const name = document.getElementById('editRiderName').value;
+            const phone = document.getElementById('editRiderPhone').value;
+            if (riderIndex !== '' && name && phone) {
+                ridersData[riderIndex].name = name;
+                ridersData[riderIndex].phone = phone;
+                localStorage.setItem('riders', JSON.stringify(ridersData));
+                displayRiders();
+            } else {
+                alert('Please select a rider and fill out both fields.');
+            }
+        }
+
+        // Delete Rider
+        function deleteRider() {
+            const riderIndex = document.getElementById('deleteRiderSelect').value;
+            if (riderIndex !== '') {
+                ridersData.splice(riderIndex, 1);
+                localStorage.setItem('riders', JSON.stringify(ridersData));
+                displayRiders();
+            } else {
+                alert('Please select a rider to delete.');
+            }
+        }
+
+        // Modal show and hide functions
+        function showModal(type) {
+            document.getElementById(type + 'Modal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('aboutModal').style.display = 'none';
+            document.getElementById('descriptionModal').style.display = 'none';
+        }
+    </script>
+
+</body>
+</html>
